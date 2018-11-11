@@ -3,14 +3,29 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
+// Services
+import { ApiService } from './services/api.service';
+import { UserService } from './services/user.service';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { ReactiveFormsModule , FormsModule } from '@angular/forms';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginPageComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    HttpClientJsonpModule,
   ],
-  providers: [],
+  providers: [
+    ApiService,
+    UserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
