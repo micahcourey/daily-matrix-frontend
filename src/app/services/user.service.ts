@@ -14,18 +14,21 @@ export class UserService {
 	private loginStatusChange: Subject<any>;
 
   constructor(private http: HttpClient, private _apiService: ApiService) { 
-    this.loggedIn = !!localStorage.getItem('auth_token');
-    this.user = JSON.parse(localStorage.getItem('connect_user'));
+    this.loggedIn = !!localStorage.getItem('matrix_auth_token');
+    this.user = JSON.parse(localStorage.getItem('matrix_user'));
 		this.loginStatusChange = new Subject<any>();
 		if (this.user) {
+			console.log(this.user)
 			this.loginStatusChange.next({logged_in: true});
 		} else {
+			console.log('not logged in', this.user)
 			this.loginStatusChange.next({logged_in: false});
+			console.log(this.loginStatusChange)
     }
-    console.log('logged in!!!')
   }
 
 	getLoginStatusChangeSub(){
+		console.log(this.loginStatusChange)
 		return this.loginStatusChange;
 	}
 	doUpdate(){
@@ -33,7 +36,7 @@ export class UserService {
 	}
 
 	getOptions() {
-    return { headers: new HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('auth_token')) };
+    return { headers: new HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('matrix_auth_token')) };
   }
 
   extractData(res: Response) {  
@@ -47,7 +50,7 @@ export class UserService {
 		console.error(errMsg); // log to console instead
 
 		if(error.status == 401){
-			localStorage.removeItem('auth_token');
+			localStorage.removeItem('matrix_auth_token');
 			localStorage.removeItem('matrix_user');
 			this.loginStatusChange.next({logged_in: false});
 			throw new Error("Token Expired");
@@ -72,12 +75,10 @@ export class UserService {
 						reject(res);
 					} else {
             console.log(res);
-						localStorage.setItem('auth_token', res.id);
-						localStorage.setItem('matrix_user', JSON.stringify(res));
-						// this.user = res.data.user;
-						this.loggedIn = true;
-						this.loginStatusChange.next({logged_in: true});
-						resolve(res);
+						localStorage.setItem('matrix_auth_token', res.id);
+						this.setUser(res.userId, res.id).then((user) => {
+							resolve(user);
+						});
 					} 
 				}, (response) => {
           console.log(response)
@@ -87,6 +88,35 @@ export class UserService {
 				console.error(e);
 			}
 		});
+	}
+
+	isLoggedIn() {
+		return !!localStorage.getItem('matrix_auth_token');
+	 }
+	 
+	setUser(userId: string, token: string) {
+		return new Promise( (resolve, reject) => {
+			let sub = this.http.get(`${this.apiUrl}/Users/${userId}?access_token=${token}`)
+			.pipe(map(this.extractData)).pipe(catchError(this.handleError));
+
+			sub.subscribe((res) => { 
+				localStorage.setItem('matrix_user', JSON.stringify(res));
+				console.log(res)
+				this.user = res;
+				this.loggedIn = true;
+				this.loginStatusChange.next({logged_in: true});
+				resolve(res);
+			}); 
+		});
+	}
+
+	logout() {
+		localStorage.removeItem('matrix_auth_token');
+		localStorage.removeItem('matrix_user');
+
+		this.user = null;
+		this.loggedIn = false;
+		this.loginStatusChange.next({logged_in: false});
 	}
 
 	// testUniqueResetParams(uniqueParams) {
@@ -150,33 +180,8 @@ export class UserService {
 	// 	});
 	// }
 
-	// setUserFromToken(token) {
-	// 	return new Promise( (resolve, reject) => {
-	// 		let sub = this.http.get( this.apiUrl + '/api/user', this.getOptions())
-	// 		.pipe(map(this.extractData)).pipe(catchError(this.handleError));
 
-	// 		sub.subscribe( (response) => { 
-	// 			localStorage.setItem('connect_user', JSON.stringify(response));
-	// 			this.user = response['user'];
-	// 			this.loggedIn = true;
 
-	// 			resolve(response);
-	// 		}); 
-	// 	});
-	// }
-
-	// isLoggedIn() {
-	//    return !!localStorage.getItem('auth_token');
-	// }
-
-	// logout() {
-	// 	localStorage.removeItem('auth_token');
-	// 	localStorage.removeItem('connect_user');
-	// 	// this._apiService.clearConfigPacket();
-	// 	this.user = null;
-	// 	this.loggedIn = false;
-	// 	this.loginStatusChange.next({logged_in: false});
-	// }
 
 	// getUser() {
 	// 	return this.user;

@@ -16,7 +16,7 @@ export class LoginPageComponent implements OnInit {
   loggedIn: boolean;
   user: any;
 
-  constructor(private _userService: UserService) { 
+  constructor(private _userService: UserService, private router: Router) { 
     this.loggingIn = false;
     this.loginError = "";
     this.loggedIn = false;
@@ -24,12 +24,15 @@ export class LoginPageComponent implements OnInit {
 			email: new FormControl('', [ Validators.required, Validators.email ]),
 			password: new FormControl('', [ ]),
     })
-    if (this._userService.getLoginStatusChangeSub) {
-      this.loggedIn = true;
-    }
+    // if (this._userService.getLoginStatusChangeSub()) {
+    //   this.loggedIn = true;
+    // }
   }
 
   ngOnInit() {
+    if (this._userService.isLoggedIn()) {
+      this.router.navigate(['/home'])
+    }
   }
 
   doLogin(){
@@ -46,8 +49,9 @@ export class LoginPageComponent implements OnInit {
  		this._userService.login(this.loginForm.value).then((res:any) => {
       this.loginError = "";
       this.loggedIn = true;
+
       this.user = res;
-      // this.loginRedirect();
+      this.router.navigate(['/home'])
       console.log(res)
 			
  		}, (errors:any)=>{
