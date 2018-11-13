@@ -31,6 +31,7 @@ export class UserService {
 		console.log(this.loginStatusChange)
 		return this.loginStatusChange;
 	}
+
 	doUpdate(){
     this.user = JSON.parse(localStorage.getItem('matrix_user'));
 	}
@@ -117,6 +118,32 @@ export class UserService {
 		this.user = null;
 		this.loggedIn = false;
 		this.loginStatusChange.next({logged_in: false});
+	}
+
+	getTasks() {
+		return new Promise( (resolve, reject) => {
+			const token = localStorage.getItem('matrix_auth_token');
+			let sub = this.http.get(`${this.apiUrl}/Tasks/?access_token=${token}`)
+			.pipe(map(this.extractData)).pipe(catchError(this.handleError));
+
+			sub.subscribe((res) => { 
+				console.log(res)
+				resolve(res);
+			}); 
+		});
+	}
+
+	postTask(task) {
+		return new Promise( (resolve, reject) => {
+			const token = localStorage.getItem('matrix_auth_token');
+			let sub = this.http.post(`${this.apiUrl}/Tasks/?access_token=${token}`, task)
+			.pipe(map(this.extractData)).pipe(catchError(this.handleError));
+
+			sub.subscribe((res) => { 
+				console.log(res)
+				resolve(res);
+			}); 
+		});
 	}
 
 	// testUniqueResetParams(uniqueParams) {

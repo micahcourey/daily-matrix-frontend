@@ -1,1 +1,18 @@
+<div *ngIf="loggedIn">
+  <button (click)="logout()">Logout</button>
+</div>
+
 <h1>Hello {{user.username}}!</h1>
+<div>
+  <textarea name="task" [(ngModel)]="newTask" cols="30" rows="10"></textarea>
+  <button (click)="postTask()">Post Task</button>
+</div>
+<div *ngIf="userTasks">
+  <h2>My Tasks</h2>
+  <hr>
+  <div *ngFor="let task of userTasks">
+    <h4>{{task.date | date:'short'}}</h4>
+    <p>{{task.body}}</p>
+    <h4></h4>
+  </div>
+</div>
