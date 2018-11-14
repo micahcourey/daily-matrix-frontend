@@ -1,18 +1,55 @@
-<div *ngIf="loggedIn">
-  <button (click)="logout()">Logout</button>
-</div>
+<mat-toolbar color="primary">
+  <span>Daily Matrix</span>
+  <span class="example-spacer"></span>
+  <button mat-button [matMenuTriggerFor]="menu">
+    <mat-icon>person</mat-icon>
+    {{user.username}}
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>Settings</button>
+    <button (click)="logout()" mat-menu-item>Logout</button>
+  </mat-menu>
+</mat-toolbar>
 
-<h1>Hello {{user.username}}!</h1>
-<div>
-  <textarea name="task" [(ngModel)]="newTask" cols="30" rows="10"></textarea>
-  <button (click)="postTask()">Post Task</button>
-</div>
-<div *ngIf="userTasks">
-  <h2>My Tasks</h2>
-  <hr>
-  <div *ngFor="let task of userTasks">
-    <h4>{{task.date | date:'short'}}</h4>
-    <p>{{task.body}}</p>
-    <h4></h4>
+<main>
+  <h1>Hello {{user.username}}!</h1>
+  <mat-card class="day-card">
+    <mat-card-header>
+      <mat-card-title>Yesterday</mat-card-title>
+      <mat-card-subtitle>{{yesterday | date:'short'}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+  <mat-card class="today-card">
+
+    <form class="task-form">
+      <mat-card-header>
+        <mat-card-title>Today</mat-card-title>
+        <mat-card-subtitle>{{today | date:'short'}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput name="task" [(ngModel)]="newTask" placeholder="What are you doing today?"></textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="postTask()">Post Task</button>
+    </form>
+  </mat-card>
+  <mat-card class="day-card">
+    <mat-card-header>
+      <mat-card-title>Tomorrow</mat-card-title>
+      <mat-card-subtitle>{{tomorrow | date:'short'}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+  <div *ngIf="userTasks">
+    <h2>My Tasks</h2>
+    <hr>
+    <div *ngFor="let task of userTasks">
+      <h4>{{task.date | date:'short'}}</h4>
+      <p>{{task.body}}</p>
+      <h4></h4>
+    </div>
   </div>
-</div>
+</main>

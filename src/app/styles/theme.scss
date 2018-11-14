@@ -1,0 +1,20 @@
+@import url( 'https://fonts.googleapis.com/css?family=Roboto:400,700|Material+Icons');
+@import '~@angular/material/theming';
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$matrix-app-primary: mat-palette($mat-blue, 800);
+$matrix-app-accent:  mat-palette($mat-teal, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$matrix-app-warn:    mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$matrix-app-theme: mat-light-theme($matrix-app-primary, $matrix-app-accent, $matrix-app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($matrix-app-theme);

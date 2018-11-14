@@ -13,10 +13,16 @@ export class HomePageComponent implements OnInit, OnChanges {
   allTasks: any
   loggedIn: boolean
   newTask: string
+  today: Date
+  yesterday: Date
+  tomorrow: Date
 
   constructor(private _userService: UserService, private router: Router) { 
     this.loggedIn = false
-    this.newTask = '';
+    this.newTask = ''
+    this.today = new Date()
+    this.yesterday = this.setYesterday(this.today)
+    this.tomorrow = this.setTomorrow(this.today)
     if (this._userService.isLoggedIn()) {
       this.loggedIn = true;
     }
@@ -42,6 +48,14 @@ export class HomePageComponent implements OnInit, OnChanges {
     this._userService.logout()
     this.loggedIn = false;
     this.router.navigate(['/'])
+  }
+
+  setYesterday(today) {
+    return today.setDate(today.getDate() -1)
+  }
+
+  setTomorrow(today) {
+    return today.setDate(today.getDate() +1)
   }
 
   postTask() {

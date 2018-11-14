@@ -1,0 +1,22 @@
+main {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.login-card {
+  margin-top: 1rem;
+  width: 500px;
+}
+.login-container {
+  display: flex;
+  flex-direction: column;
+}
+
+@media(max-width: 500px) {
+  .login-card {
+    width: 100%;
+  }
+}

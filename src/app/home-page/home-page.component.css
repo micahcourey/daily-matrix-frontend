@@ -1,0 +1,33 @@
+
+main {
+  width: 100vw;
+  height: calc(100vh -64px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.example-spacer {
+  flex: 1 1 auto;
+}
+.task-form {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+.day-card {
+  height: 200px;
+  width: 500px;
+  margin-bottom: 1rem;
+}
+.today-card {
+  min-height: 200px;
+  width: 500px;
+  margin-bottom: 1rem;
+}
+
+@media(max-width: 500px) {
+  .task-form, .day-card {
+    width: 100%;
+  }
+}
