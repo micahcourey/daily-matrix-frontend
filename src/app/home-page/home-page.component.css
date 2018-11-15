@@ -20,6 +20,11 @@ main {
   width: 500px;
   margin-bottom: 1rem;
 }
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 .today-card {
   min-height: 200px;
   width: 500px;
@@ -27,7 +32,10 @@ main {
 }
 
 @media(max-width: 500px) {
-  .task-form, .day-card {
+  main {
+    padding: 0 1rem;
+  }
+  .task-form, .day-card, .today-card {
     width: 100%;
   }
 }

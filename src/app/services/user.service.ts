@@ -146,6 +146,19 @@ export class UserService {
 		});
 	}
 
+	patchTask(task, taskId) {
+		return new Promise( (resolve, reject) => {
+			const token = localStorage.getItem('matrix_auth_token');
+			let sub = this.http.patch(`${this.apiUrl}/Tasks/${taskId}?access_token=${token}`, task)
+			.pipe(map(this.extractData)).pipe(catchError(this.handleError));
+
+			sub.subscribe((res) => { 
+				console.log(res)
+				resolve(res);
+			}); 
+		});
+	}
+
 	// testUniqueResetParams(uniqueParams) {
 	// 	return new Promise((resolve, reject) => {
 	// 		const headers: any = new HttpHeaders();
