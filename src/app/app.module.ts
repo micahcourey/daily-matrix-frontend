@@ -29,6 +29,8 @@ import {
   MatSnackBarModule,
   MatIconModule,
   MatToolbarModule,
+  MatListModule,
+  MatExpansionModule
 } from '@angular/material';
 
 // App Components
@@ -36,6 +38,8 @@ import { AppComponent } from './app.component';
 
 import { LoginPageComponent } from './login-page/login-page.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { ActivityEditorComponent } from './home-page/activity-editor/activity-editor.component';
+import { GoalTrackerComponent } from './home-page/goal-tracker/goal-tracker.component';
 
 const routes: Routes = [ ];
 
@@ -44,6 +48,8 @@ const routes: Routes = [ ];
     AppComponent,
     LoginPageComponent,
     HomePageComponent,
+    ActivityEditorComponent,
+    GoalTrackerComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,7 +72,9 @@ const routes: Routes = [ ];
     MatTabsModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    MatIconModule
+    MatIconModule,
+    MatListModule,
+    MatExpansionModule
   ],
   providers: [
     ApiService,

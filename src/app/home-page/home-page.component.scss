@@ -1,0 +1,18 @@
+
+main {
+  width: 100vw;
+  height: calc(100vh -64px);
+  padding-top: 1rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+@media(max-width: 500px) {
+  main {
+    padding: 0 1rem;
+  }
+}

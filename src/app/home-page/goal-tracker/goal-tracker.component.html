@@ -1,0 +1,31 @@
+<div class="goals-container">
+  <h2>Long-Term Goals</h2>
+  <mat-accordion *ngIf="quarters">
+
+    
+    <mat-expansion-panel *ngFor="let quarter of quarters; let i = index" class="goal-card"
+      [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+      <mat-expansion-panel-header>
+        <div class="panel-header">
+          <mat-panel-title>
+            Q{{quarter.quarter}}, {{quarter.year}} 
+          </mat-panel-title>
+          <mat-panel-description class="header-description">
+            {{quarter.goals.length}} Goals set for Q{{quarter.quarter}}
+          </mat-panel-description>
+        </div>
+      </mat-expansion-panel-header>
+  
+      <mat-selection-list #goals>
+          <mat-list-option *ngFor="let goal of quarter.goals">
+            {{goal.body}}
+          </mat-list-option>
+      </mat-selection-list>
+  
+      <mat-action-row>
+        <button mat-button color="primary" (click)="nextStep()">Add Goal</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</div>

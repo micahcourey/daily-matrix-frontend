@@ -133,6 +133,19 @@ export class UserService {
 		});
 	}
 
+	getGoals() {
+		return new Promise( (resolve, reject) => {
+			const token = localStorage.getItem('matrix_auth_token');
+			let sub = this.http.get(`${this.apiUrl}/Goals/?access_token=${token}`)
+			.pipe(map(this.extractData)).pipe(catchError(this.handleError));
+
+			sub.subscribe((res) => { 
+				console.log(res)
+				resolve(res);
+			}); 
+		});
+	}
+
 	postTask(task) {
 		return new Promise( (resolve, reject) => {
 			const token = localStorage.getItem('matrix_auth_token');

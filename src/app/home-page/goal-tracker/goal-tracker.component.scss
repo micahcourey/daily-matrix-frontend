@@ -1,0 +1,21 @@
+.goals-container {
+
+}
+.goal-card {
+  width: 500px;
+}
+.panel-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: space-between;
+}
+.header-description {
+  flex-grow: 0;
+}
+
+@media(max-width: 500px) {
+  .goal-card {
+    width: 100%;
+  }
+}
